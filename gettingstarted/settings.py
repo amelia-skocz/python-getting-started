@@ -51,45 +51,7 @@ DEBUG = os.environ.get("ENVIRONMENT") == "development"
 # https://devcenter.heroku.com/articles/heroku-ci#immutable-environment-variables
 IS_HEROKU_APP = "DYNO" in os.environ and "CI" not in os.environ
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'lab-python.onrender.com']
-
-if os.environ.get('IS_HEROKU_APP')== '1':
-  ALLOWED_HOSTS.append('*')
-if os.environ.get('ALLOWED_HOSTS'):
-  ALLOWED_HOSTS.extend(os.environ.get('ALLOWED_HOSTS').split(','))
-
-if IS_HEROKU_APP:
-    # On Heroku, it's safe to use a wildcard for `ALLOWED_HOSTS`, since the Heroku router performs
-    # validation of the Host header in the incoming HTTP request. On other platforms you may need to
-    # list the expected hostnames explicitly in production to prevent HTTP Host header attacks. See:
-    # https://docs.djangoproject.com/en/6.0/ref/settings/#std-setting-ALLOWED_HOSTS
-    ALLOWED_HOSTS = ["*"]
-pass
-
-    # Redirect all non-HTTPS requests to HTTPS. This requires that:
-    # 1. Your app has a TLS/SSL certificate, which all `*.herokuapp.com` domains do by default.
-    #    When using a custom domain, you must configure one. See:
-    #    https://devcenter.heroku.com/articles/automated-certificate-management
-    # 2. Your app's WSGI web server is configured to use the `X-Forwarded-Proto` headers set by
-    #    the Heroku Router (otherwise you may encounter infinite HTTP 301 redirects). See this
-    #    app's `gunicorn.conf.py` for how this is done when using gunicorn.
-    #
-    # For maximum security, consider enabling HTTP Strict Transport Security (HSTS) headers too:
-    # https://docs.djangoproject.com/en/6.0/ref/middleware/#http-strict-transport-security
-    SECURE_SSL_REDIRECT = True
-else:
-    ALLOWED_HOSTS = ['lab-python.onrender.com', 'localhost', '127.0.0.1', '*']
-
-
-# Application definition
-
-# Several optional Django features that are present in the default `startproject` template have
-# been disabled since they are not used by this example app. To use them, uncomment the relevant
-# entries in `INSTALLED_APPS`, `MIDDLEWARE`, `TEMPLATES` and `urls.py`. See:
-# https://docs.djangoproject.com/en/6.0/ref/contrib/admin/
-# https://docs.djangoproject.com/en/6.0/topics/auth/
-# https://docs.djangoproject.com/en/6.0/ref/contrib/contenttypes/
-# https://docs.djangoproject.com/en/6.0/topics/http/sessions/
-# https://docs.djangoproject.com/en/6.0/ref/contrib/messages/
+SECURE_SSL_REDIRECT = False
 INSTALLED_APPS = [
     # Use WhiteNoise's runserver implementation instead of the Django default, for dev-prod parity.
     "whitenoise.runserver_nostatic",
