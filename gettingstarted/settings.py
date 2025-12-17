@@ -52,8 +52,10 @@ DEBUG = os.environ.get("ENVIRONMENT") == "development"
 IS_HEROKU_APP = "DYNO" in os.environ and "CI" not in os.environ
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'lab-python.onrender.com'
 
+if os.environ.get('IS_HEROKU_APP')== '1':
+  ALLOWED_HOSTS.append('*')
 if os.environ.get('ALLOWED_HOSTS'):
-ALLOWED_HOSTS.extend(os.environ.get('ALLOWED_HOSTS').split(','))
+  ALLOWED_HOSTS.extend(os.environ.get('ALLOWED_HOSTS').split(','))
 
 if IS_HEROKU_APP:
     # On Heroku, it's safe to use a wildcard for `ALLOWED_HOSTS`, since the Heroku router performs
