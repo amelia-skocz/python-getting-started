@@ -50,6 +50,10 @@ DEBUG = os.environ.get("ENVIRONMENT") == "development"
 # also explicitly exclude CI:
 # https://devcenter.heroku.com/articles/heroku-ci#immutable-environment-variables
 IS_HEROKU_APP = "DYNO" in os.environ and "CI" not in os.environ
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'lab-python.onrender.com'
+
+if os.environ.get('ALLOWED_HOSTS'):
+ALLOWED_HOSTS.extend(os.environ.get('ALLOWED_HOSTS').split(','))
 
 if IS_HEROKU_APP:
     # On Heroku, it's safe to use a wildcard for `ALLOWED_HOSTS`, since the Heroku router performs
@@ -57,6 +61,7 @@ if IS_HEROKU_APP:
     # list the expected hostnames explicitly in production to prevent HTTP Host header attacks. See:
     # https://docs.djangoproject.com/en/6.0/ref/settings/#std-setting-ALLOWED_HOSTS
     ALLOWED_HOSTS = ["*"]
+pass
 
     # Redirect all non-HTTPS requests to HTTPS. This requires that:
     # 1. Your app has a TLS/SSL certificate, which all `*.herokuapp.com` domains do by default.
